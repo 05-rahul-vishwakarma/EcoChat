@@ -14,6 +14,7 @@ export const authOptions = {
                 try {
                     await connectToDB();
                     const user = await User.findOne({ username: credentials.username })
+                    // console.log(user);
                     if (!user) throw new Error("user is not found");
                     if (user.password === credentials.password) {
                         return user;
@@ -30,6 +31,7 @@ export const authOptions = {
 
     secret: process.env.NEXTAUTH_SECRET,
     session: {
+        jwt:true,
         maxAge: 24 * 60 * 60, // 1 day in seconds
     },
     jwt: {
@@ -47,13 +49,11 @@ export const authOptions = {
             }
             return token;
         },
-        async session({ session, token }) {
-            if (token) {
-                session.user.username = token.username;
-                session.user.email = token.email;
-                session.user.id = token.id;
-            }
-            return session;
+        async session({ session }) {
+            const mongodbUser = await User.findOne({ email: session.user.email })
+            session.user.id = mongodbUser._id.toString()
+            session.user = { ...session.user, ...mongodbUser._doc }
+            return session
         }
     }
 }

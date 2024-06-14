@@ -22,7 +22,7 @@ function Login() {
         password,
       });
       if (res.status === 200) {
-        router.push("/");
+        router.push("/chats");
       }
       if (res.error) {
         alert("wrong credentials")
