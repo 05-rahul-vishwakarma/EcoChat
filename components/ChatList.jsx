@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Chat from './Chat';
 import { useSession } from 'next-auth/react';
 
-function ChatList() {
+function ChatList({ currentUserId }) {
 
   const { data: session } = useSession();
   const currentUser = session?.user;
@@ -48,10 +48,10 @@ function ChatList() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <div className='min-h-full bg-white rounded-2xl mt-0.5 ' >
+        <div className='min-h-full bg-white rounded-2xl mt-0.5' >
           {
             chatData?.map((item, i) => (
-              <Chat key={i} chat={item} currentUser={currentUser}  />
+              <Chat key={i} chat={item} currentUser={currentUser} currentUserId={currentUserId} />
             ))
           }
         </div>

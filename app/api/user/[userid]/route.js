@@ -1,7 +1,7 @@
 
 
 import { connectToDB } from "@/lib/connectionDatabase/database"
-import Chats from "@/lib/models/Chat";
+import Chats from "@/lib/models/Chats";
 import User from "@/lib/models/User";
 import { NextResponse } from "next/server";
 

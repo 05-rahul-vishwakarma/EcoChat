@@ -1,12 +1,20 @@
+"use client";
+
 import ChatDetails from '@/components/ChatDetails'
 import ChatList from '@/components/ChatList'
+import { useSession } from 'next-auth/react'
+import { useParams } from "next/navigation"
 import React from 'react'
 
 function ChatPage() {
+  const { chatId } = useParams()
+  const { data: session } = useSession();
+  
+
   return (
     <div className="main-container">
-    <div className="w-1/3 max-lg:hidden"><ChatList /></div>
-    <div className="w-2/3 max-lg:w-full"><ChatDetails /></div>
+    <div className="w-1/3 max-lg:hidden"><ChatList currentUserId={chatId} /></div>
+    <div className="w-2/3 max-lg:w-full"><ChatDetails chatId={chatId} /></div>
   </div>
   )
 }

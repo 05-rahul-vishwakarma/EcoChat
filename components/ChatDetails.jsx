@@ -1,10 +1,38 @@
 "use client";
 
 import { AddPhotoAlternate } from '@mui/icons-material'
+import { useSession } from 'next-auth/react';
 import { CldUploadButton } from 'next-cloudinary'
-import React from 'react'
+import React ,{useEffect} from 'react'
 
-function ChatDetails() {
+function ChatDetails({chatId}) {
+
+  // console.log(chatId);
+  
+  const {data:session} = useSession();
+  const currentUser = session?.user;
+
+  const getChatDetails = async () => {
+    try {
+      let res = await fetch(`/api/chats/${chatId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      res = await res.json();
+      console.log(res)
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (currentUser && chatId) getChatDetails();
+  }, [currentUser, chatId]);
+
+  
   return (
     <div className="pb-20 ">
     <div className="chat-details">
